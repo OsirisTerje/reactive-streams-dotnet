@@ -145,14 +145,14 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public void Flop(string message)
         {
-            try
-            {
-                Assert.Fail(message);
-            }
-            catch (Exception ex)
-            {
-                AsyncErrors.Enqueue(ex);
-            }
+            //try
+            //{
+            //    Assert.Fail(message);
+            //}
+            //catch (Exception ex)
+            //{
+                AsyncErrors.Enqueue(new AssertionException(message));
+            //}
         }
 
         /// <summary>
@@ -169,14 +169,18 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public void Flop(Exception exception, string message)
         {
-            try
-            {
-                Assert.Fail(message, exception);
-            }
-            catch (Exception)
-            {
-                AsyncErrors.Enqueue(exception);
-            }
+
+            var ex = new AssertionException(message);
+
+
+            //try
+            //{
+            //    Assert.Fail(message, exception);
+            //}
+            //catch (Exception)
+            //{
+                AsyncErrors.Enqueue(ex);
+            //}
         }
 
         /// <summary>
@@ -193,14 +197,14 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public void Flop(Exception exception)
         {
-            try
-            {
-                Assert.Fail(exception.Message, exception);
-            }
-            catch (Exception)
-            {
-                AsyncErrors.Enqueue(exception);
-            }
+            //try
+            //{
+            //    Assert.Fail(exception.Message, exception);
+            //}
+            //catch (Exception)
+            //{
+                AsyncErrors.Enqueue(new AssertionException(exception.Message));
+            //}
         }
 
         /// <summary>
@@ -217,15 +221,18 @@ namespace Reactive.Streams.TCK
         /// </summary>
         public T FlopAndFail<T>(string message)
         {
-            try
-            {
-                Assert.Fail(message);
-            }
-            catch (Exception ex)
-            {
+            var ex = new ArgumentException(message);
+
+            //try
+            //{
+            //    Assert.Fail(message);
+            //}
+            //catch (Exception ex)
+            //{
                 AsyncErrors.Enqueue(ex);
-                Assert.Fail(message, ex);
-            }
+                throw new ArgumentException(message);
+                // Assert.Fail(message, ex);
+            //}
 
             return default(T); // unreachable, the previous block will always exit by throwing
         }
